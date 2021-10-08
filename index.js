@@ -19,7 +19,7 @@ const onError = (err, req, res, target) => {
 
 const onProxyRes = responseInterceptor(async (responseBuffer, proxyres, req, res) => {
 	if (proxyres.statusCode >= 400 && proxyres.statusCode < 500 && REDIRECT_ERRORS) {
-		const result = await fetch(API_SERVICE_URL + REDIRECT_ERRORS);
+		const result = await fetch(REDIRECT_ERRORS.match(/^http/) ? REDIRECT_ERRORS : API_SERVICE_URL + REDIRECT_ERRORS);
 		const headers = result.headers.raw();
 		for (let key in headers) {
 			res.setHeader(key, headers[key]);
